@@ -18,6 +18,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { login } from "@/redux/store/userSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -33,23 +34,35 @@ export default function LoginComponent() {
   const handleSubmit = (values: { email: string; password: string }) => {
     const storedUser = localStorage.getItem("userData");
     if (!storedUser) {
-      alert("No account found. Please sign up first!");
+      toast.error("No account found. Please sign up first!", {
+        style: { background: "#000", color: "#fff" },
+      });
       router.push("/signup");
       return;
     }
 
     const parsedUser = JSON.parse(storedUser);
-    if (values.email === parsedUser.email) {
-      dispatch(login({ name: parsedUser.name, email: parsedUser.email }));
-      alert("Login successful!");
+
+    if (
+      values.email === parsedUser.email &&
+      values.password === parsedUser.password
+    ) {
+      dispatch(login({
+        name: parsedUser.name, email: parsedUser.email,
+      }));
+      toast.success("Login successful!", {
+        style: { background: "#000", color: "#fff" },
+      });
       router.push("/dashboard/news-page");
     } else {
-      alert("Invalid email or password!");
+      toast.error("Invalid email or password!", {
+        style: { background: "#000", color: "#fff" },
+      });
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center relative bg-[url('/newsimgs.jpg')] bg-cover bg-center">
+      <Toaster position="top-center" />
       <div className="absolute inset-0 bg-black/50"></div>
       <div className="relative w-full max-w-md p-4">
         <div className="text-center mb-8">
@@ -138,7 +151,7 @@ export default function LoginComponent() {
             <div className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
               <Link
-                href="/signup"
+                href="/auth/signup"
                 className=" text-white font-medium transition-colors"
               >
                 Sign up

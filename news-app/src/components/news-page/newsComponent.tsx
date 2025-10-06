@@ -16,7 +16,14 @@ interface NewsCardProps {
   category: string
 }
 
-export function NewsCardComponent({ id, title, description, image, likes: initialLikes, category }: NewsCardProps) {
+export function NewsCardComponent({
+  id,
+  title,
+  description,
+  image,
+  likes: initialLikes,
+  category,
+}: NewsCardProps) {
   const [likes, setLikes] = useState(initialLikes)
   const [isLiked, setIsLiked] = useState(false)
 
@@ -33,12 +40,21 @@ export function NewsCardComponent({ id, title, description, image, likes: initia
   return (
     <Card className="group overflow-hidden border-border bg-card hover:border-accent/50 transition-all duration-300">
       <div className="relative aspect-video overflow-hidden">
-        <Image
-          src={image || "/placeholder.svg"}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        {image?.startsWith("http") ? (
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <Image
+            src="/placeholder.svg"
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        )}
+
         <div className="absolute top-3 left-3">
           <span className="inline-flex items-center rounded-md bg-accent/90 px-2.5 py-1 text-xs font-medium text-accent-foreground">
             {category}
@@ -47,8 +63,12 @@ export function NewsCardComponent({ id, title, description, image, likes: initia
       </div>
 
       <CardContent className="p-5">
-        <h3 className="text-lg font-semibold text-card-foreground mb-2 line-clamp-2 text-balance">{title}</h3>
-        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{description}</p>
+        <h3 className="text-lg font-semibold text-card-foreground mb-2 line-clamp-2 text-balance">
+          {title}
+        </h3>
+        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+          {description}
+        </p>
       </CardContent>
 
       <CardFooter className="flex items-center justify-between p-5 pt-0">
@@ -56,7 +76,9 @@ export function NewsCardComponent({ id, title, description, image, likes: initia
           onClick={handleLike}
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
         >
-          <Heart className={`h-5 w-5 transition-all ${isLiked ? "fill-accent text-accent" : ""}`} />
+          <Heart
+            className={`h-5 w-5 transition-all ${isLiked ? "fill-accent text-accent" : ""}`}
+          />
           <span className={isLiked ? "text-accent font-medium" : ""}>{likes}</span>
         </button>
 

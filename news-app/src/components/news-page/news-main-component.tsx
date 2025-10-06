@@ -1,88 +1,62 @@
-
 "use client";
-import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
-import { NewsCardComponent } from "@/components/news-page/newsComponent"
-import { useState } from "react"
 
-const newsData = [
-  {
-    id: "1",
-    title: "Breaking: Major Technological Breakthrough in AI Research",
-    description:
-      "Scientists have announced a groundbreaking discovery in artificial intelligence that could revolutionize how machines learn and adapt to new situations.",
-    image: "/futuristic-ai-technology-lab.jpg",
-    likes: 1247,
-    category: "Technology",
-  },
-  {
-    id: "2",
-    title: "Global Climate Summit Reaches Historic Agreement",
-    description:
-      "World leaders have come together to sign a comprehensive climate action plan aimed at reducing carbon emissions by 50% over the next decade.",
-    image: "/world-leaders-climate-summit.jpg",
-    likes: 892,
-    category: "Environment",
-  },
-  {
-    id: "3",
-    title: "Stock Markets Hit Record Highs Amid Economic Recovery",
-    description:
-      "Major stock indices around the world have reached unprecedented levels as economies continue to bounce back from recent challenges.",
-    image: "/stock-market-trading-floor.png",
-    likes: 634,
-    category: "Business",
-  },
-  {
-    id: "4",
-    title: "New Space Mission Discovers Potentially Habitable Exoplanet",
-    description:
-      "Astronomers have identified a planet in a distant solar system that shows promising signs of being able to support life as we know it.",
-    image: "/exoplanet-space-telescope-view.jpg",
-    likes: 2103,
-    category: "Science",
-  },
-  {
-    id: "5",
-    title: "Revolutionary Medical Treatment Shows Promise in Clinical Trials",
-    description:
-      "A new therapeutic approach has demonstrated remarkable success in treating previously incurable diseases, offering hope to millions of patients worldwide.",
-    image: "/medical-research-lab.png",
-    likes: 1456,
-    category: "Health",
-  },
-  {
-    id: "6",
-    title: "Championship Finals Draw Record-Breaking Viewership",
-    description:
-      "The highly anticipated sports championship has captivated audiences globally, with streaming numbers surpassing all previous records.",
-    image: "/sports-championship-stadium.jpg",
-    likes: 987,
-    category: "Sports",
-  },
-]
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { NewsCardComponent } from "@/components/news-page/newsComponent";
 
 export default function NewsMainComponent() {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [newsData, setNewsData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchNews = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `https://newsapi.org/v2/everything?q=apple&from=2025-10-05&to=2025-10-05&sortBy=popularity&apiKey=2ec5559136b849279e21634c7f15bd43`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
+      }
+
+      const data = await response.json();
+      setNewsData(data.articles || []);
+    } catch (err: any) {
+      console.error("Error fetching news:", err);
+      setError(err.message || "Something went wrong while fetching news");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchNews();
+  }, []);
 
   const filteredNews = newsData.filter((news) => {
-    const query = searchQuery.toLowerCase()
+    const query = searchQuery.toLowerCase();
     return (
-      news.title.toLowerCase().includes(query) ||
-      news.description.toLowerCase().includes(query) ||
-      news.category.toLowerCase().includes(query)
-    )
-  })
+      news.title?.toLowerCase().includes(query) ||
+      news.description?.toLowerCase().includes(query) ||
+      news.source?.name?.toLowerCase().includes(query)
+    );
+  });
 
   return (
-    <div className="min-h-screen bg-background">
-
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-background">
+      <main className="ml-10 px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">Latest News & Updates</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
+            Latest News & Updates
+          </h1>
           <p className="text-lg text-muted-foreground max-w-2xl text-pretty">
-            Stay informed with the most recent stories from around the world. Breaking news, analysis, and insights
-            delivered to you.
+            Stay informed with the most recent stories from around the world.
+            Breaking news, analysis, and insights delivered to you.
           </p>
         </div>
 
@@ -99,19 +73,39 @@ export default function NewsMainComponent() {
           </div>
         </div>
 
-        {filteredNews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredNews.map((news) => (
-              <NewsCardComponent key={news.id} {...news} />
+        {loading ? (
+          <div className="text-center py-16">
+            <p className="text-lg text-muted-foreground">Loading news...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-16 text-red-500">
+            <p>{error}</p>
+          </div>
+        ) : filteredNews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredNews.map((news, index) => (
+              <NewsCardComponent
+                key={index}
+                title={news.title}
+                description={news.description}
+                image={news.urlToImage || "/placeholder.png"}
+                category={news.source?.name || "General"}
+                id={""}
+                likes={0}
+              />
             ))}
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground">No news articles found matching "{searchQuery}"</p>
-            <p className="text-sm text-muted-foreground mt-2">Try searching with different keywords</p>
+            <p className="text-lg text-muted-foreground">
+              No news articles found matching "{searchQuery}"
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Try searching with different keywords
+            </p>
           </div>
         )}
       </main>
     </div>
-  )
+  );
 }

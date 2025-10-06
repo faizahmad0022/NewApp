@@ -5,6 +5,6 @@ export default function NewsPage() {
     return (
         <div>
             <NewsMainComponent />
-        </div>
+        </div>  
     );
 }

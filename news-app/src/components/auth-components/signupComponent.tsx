@@ -15,9 +15,10 @@ import {
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/redux/store/userSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUpSchema = Yup.object().shape({
   name: Yup.string().required("Full Name is required"),
@@ -35,13 +36,29 @@ export default function SignUpComponent() {
   const router = useRouter();
 
   const handleSubmit = (values: any) => {
-    dispatch(login({ name: values.name, email: values.email }));
-    alert("Account created successfully!");
-    router.push("/login");
+    // Store complete user data in localStorage including password
+    localStorage.setItem("userData", JSON.stringify({
+      name: values.name,
+      email: values.email,
+      password: values.password // This is crucial for login
+    }));
+
+    // Also dispatch login to update Redux state
+    dispatch(login({
+      name: values.name,
+      email: values.email,
+      
+    }));
+    
+    toast.success("Account created successfully!", {
+      style: { background: "#000", color: "#fff" },
+    });
+    router.push("/dashboard/news-page");
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center">
+      <Toaster position="top-center" />
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/newsimgs.jpg')" }}
@@ -176,7 +193,7 @@ export default function SignUpComponent() {
             <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
               <Link
-                href="/login"
+                href="/auth/login" // Make sure this path is correct
                 className="text-accent hover:text-accent/80 font-medium transition-colors"
               >
                 Sign in
