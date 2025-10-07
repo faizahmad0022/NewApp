@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -33,11 +32,12 @@ export default function LoginComponent() {
 
   const handleSubmit = (values: { email: string; password: string }) => {
     const storedUser = localStorage.getItem("userData");
+
     if (!storedUser) {
       toast.error("No account found. Please sign up first!", {
         style: { background: "#000", color: "#fff" },
       });
-      router.push("/signup");
+      router.push("/auth/signup");
       return;
     }
 
@@ -47,12 +47,18 @@ export default function LoginComponent() {
       values.email === parsedUser.email &&
       values.password === parsedUser.password
     ) {
-      dispatch(login({
-        name: parsedUser.name, email: parsedUser.email,
-      }));
+      dispatch(
+        login({
+          name: parsedUser.name,
+          email: parsedUser.email,
+          password: parsedUser.password,
+        })
+      );
+
       toast.success("Login successful!", {
         style: { background: "#000", color: "#fff" },
       });
+
       router.push("/dashboard/news-page");
     } else {
       toast.error("Invalid email or password!", {
@@ -60,6 +66,7 @@ export default function LoginComponent() {
       });
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center relative bg-[url('/newsimgs.jpg')] bg-cover bg-center">
       <Toaster position="top-center" />
@@ -110,17 +117,9 @@ export default function LoginComponent() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password" className="text-white">
-                        Password
-                      </Label>
-                      <Link
-                        href="#"
-                        className="text-sm text-accent hover:text-accent/80 transition-colors"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
+                    <Label htmlFor="password" className="text-white">
+                      Password
+                    </Label>
                     <Field
                       as={Input}
                       id="password"

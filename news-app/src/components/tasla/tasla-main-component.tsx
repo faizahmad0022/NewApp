@@ -3,13 +3,24 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { NewsCardComponent } from "@/components/news-page/newsComponent";
+import { TaslaCardComponent } from "./taslaComponent";
 
-export default function NewsMainComponent() {
+
+interface NewsArticle {
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string | null;
+  source: { name: string };
+}
+
+export default function TaslaMainComponent() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [newsData, setNewsData] = useState<any[]>([]);
+  const [newsData, setNewsData] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const API_KEY = "YOUR_API_KEY"; // Replace with your real API key
 
   const fetchNews = async () => {
     setLoading(true);
@@ -17,7 +28,7 @@ export default function NewsMainComponent() {
 
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/everything?q=apple&from=2025-10-05&to=2025-10-05&sortBy=popularity&apiKey=2ec5559136b849279e21634c7f15bd43`
+        `https://newsapi.org/v2/everything?q=tesla&from=2025-09-07&sortBy=publishedAt&apiKey=2ec5559136b849279e21634c7f15bd43`
       );
 
       if (!response.ok) {
@@ -33,11 +44,12 @@ export default function NewsMainComponent() {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchNews();
   }, []);
 
+  // Local search filtering
   const filteredNews = newsData.filter((news) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -52,10 +64,10 @@ export default function NewsMainComponent() {
       <main className="ml-10 px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
-            Latest News & Updates
+            Latest Tesla News & Updates
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl text-pretty">
-            Stay informed with the most recent stories from around the world.
+            Stay informed with the most recent Tesla news from around the world.
             Breaking news, analysis, and insights delivered to you.
           </p>
         </div>
@@ -65,7 +77,7 @@ export default function NewsMainComponent() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Search news by keyword, title, or category..."
+              placeholder="Search news by keyword, title, or source..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-12 bg-card border-border text-foreground placeholder:text-muted-foreground"
@@ -82,18 +94,18 @@ export default function NewsMainComponent() {
             <p>{error}</p>
           </div>
         ) : filteredNews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredNews.map((news, index) => (
-              <NewsCardComponent
+              <TaslaCardComponent
                 key={index}
+                id={news.url} // Using URL as unique ID
                 title={news.title}
                 description={news.description}
                 image={news.urlToImage || "/placeholder.png"}
                 category={news.source?.name || "General"}
                 likes={0}
-                url={news.url} 
-                id={""}   
-                />
+                url={news.url} // Opens in new tab
+              />
             ))}
           </div>
         ) : (

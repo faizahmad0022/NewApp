@@ -36,24 +36,23 @@ export default function SignUpComponent() {
   const router = useRouter();
 
   const handleSubmit = (values: any) => {
-    // Store complete user data in localStorage including password
-    localStorage.setItem("userData", JSON.stringify({
-      name: values.name,
-      email: values.email,
-      password: values.password // This is crucial for login
-    }));
 
-    // Also dispatch login to update Redux state
-    dispatch(login({
+    const userData = {
       name: values.name,
       email: values.email,
-      
-    }));
-    
+      password: values.password,
+    };
+    localStorage.setItem("userData", JSON.stringify(userData));
+    localStorage.setItem("isLoggedIn", "true");
+
+
+    dispatch(login(userData));
+
     toast.success("Account created successfully!", {
       style: { background: "#000", color: "#fff" },
     });
-    router.push("/dashboard/news-page");
+
+    router.push("/");
   };
 
   return (
@@ -193,7 +192,7 @@ export default function SignUpComponent() {
             <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
               <Link
-                href="/auth/login" // Make sure this path is correct
+                href="/auth/login"
                 className="text-accent hover:text-accent/80 font-medium transition-colors"
               >
                 Sign in

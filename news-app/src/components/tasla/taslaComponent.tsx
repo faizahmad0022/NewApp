@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Heart } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
 
 interface NewsCardProps {
-  id: string
-  title: string
-  description: string
-  image: string
-  likes: number
-  category: string
-  url: string
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  likes: number;
+  category: string;
+  url: string;
 }
 
-export function NewsCardComponent({
+export function TaslaCardComponent({
   id,
   title,
   description,
@@ -26,18 +26,18 @@ export function NewsCardComponent({
   category,
   url,
 }: NewsCardProps) {
-  const [likes, setLikes] = useState(initialLikes)
-  const [isLiked, setIsLiked] = useState(false)
+  const [likes, setLikes] = useState(initialLikes);
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = () => {
     if (isLiked) {
-      setLikes(likes - 1)
-      setIsLiked(false)
+      setLikes(likes - 1);
+      setIsLiked(false);
     } else {
-      setLikes(likes + 1)
-      setIsLiked(true)
+      setLikes(likes + 1);
+      setIsLiked(true);
     }
-  }
+  };
 
   return (
     <Card className="group overflow-hidden border-border bg-card hover:border-accent/50 transition-all duration-300">
@@ -91,5 +91,5 @@ export function NewsCardComponent({
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

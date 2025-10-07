@@ -17,7 +17,7 @@ interface NewsCardProps {
   url: string
 }
 
-export function NewsCardComponent({
+export function SourceCardComponent({
   id,
   title,
   description,
