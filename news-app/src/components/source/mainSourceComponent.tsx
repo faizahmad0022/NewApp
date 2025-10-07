@@ -18,7 +18,7 @@ export default function MainSourceComponent() {
 
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=2ec5559136b849279e21634c7f15bd43`
+        `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
       );
 
       if (!response.ok) {

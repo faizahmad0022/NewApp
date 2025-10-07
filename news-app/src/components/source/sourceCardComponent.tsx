@@ -40,7 +40,7 @@ export function SourceCardComponent({
   }
 
   return (
-    <Card className="group overflow-hidden border-border bg-card hover:border-accent/50 transition-all duration-300">
+    <Card className="group overflow-hidden border-border bg-card hover:border-accent/50 transition-all duration-300 flex flex-col">
       <div className="relative aspect-video overflow-hidden">
         {image?.startsWith("http") ? (
           <img
@@ -63,8 +63,8 @@ export function SourceCardComponent({
           </span>
         </div>
       </div>
-
-      <CardContent className="p-5">
+      
+      <CardContent className="p-5 flex-1">
         <h3 className="text-lg font-semibold text-card-foreground mb-2 line-clamp-2 text-balance">
           {title}
         </h3>
@@ -79,7 +79,9 @@ export function SourceCardComponent({
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
         >
           <Heart
-            className={`h-5 w-5 transition-all ${isLiked ? "fill-accent text-accent" : ""}`}
+            className={`h-5 w-5 transition-all ${
+              isLiked ? "fill-accent text-accent" : ""
+            }`}
           />
           <span className={isLiked ? "text-accent font-medium" : ""}>{likes}</span>
         </button>

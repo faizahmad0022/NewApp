@@ -28,7 +28,7 @@ export default function TaslaMainComponent() {
 
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/everything?q=tesla&from=2025-09-07&sortBy=publishedAt&apiKey=2ec5559136b849279e21634c7f15bd43`
+        `https://newsapi.org/v2/everything?q=tesla&from=2025-09-07&sortBy=publishedAt&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
       );
 
       if (!response.ok) {
@@ -98,13 +98,13 @@ export default function TaslaMainComponent() {
             {filteredNews.map((news, index) => (
               <TaslaCardComponent
                 key={index}
-                id={news.url} // Using URL as unique ID
+                id={news.url} 
                 title={news.title}
                 description={news.description}
                 image={news.urlToImage || "/placeholder.png"}
                 category={news.source?.name || "General"}
                 likes={0}
-                url={news.url} // Opens in new tab
+                url={news.url} 
               />
             ))}
           </div>

@@ -17,7 +17,7 @@ export default function NewsMainComponent() {
 
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/everything?q=apple&from=2025-10-05&to=2025-10-05&sortBy=popularity&apiKey=2ec5559136b849279e21634c7f15bd43`
+        `https://newsapi.org/v2/everything?q=apple&from=2025-10-05&to=2025-10-05&sortBy=popularity&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`
       );
 
       if (!response.ok) {
