@@ -1,9 +1,13 @@
+import DashboardPageWrapper from "@/components/dashboardPageWrapper";
 import MainSourceComponent from "@/components/source/mainSourceComponent";
 
 export default function SourcePage() {
     return (
         <div>
-            <MainSourceComponent />
+            <DashboardPageWrapper>
+                <MainSourceComponent />
+            </DashboardPageWrapper>
+            
         </div>
     );
 }

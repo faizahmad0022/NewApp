@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { logout } from "@/redux/store/userSlice";
 
 export function Navbar() {
@@ -9,11 +9,11 @@ export function Navbar() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser"); 
-    dispatch(logout());
-    router.push("/");
-  };
-
+  document.cookie = "isLoggedIn=; path=/;";
+  localStorage.removeItem("userData");
+  dispatch(logout());
+  router.push("/");
+};
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">

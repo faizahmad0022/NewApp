@@ -1,8 +1,8 @@
 "use client";
 
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { BussinesCardComponent } from "./bussinesCardComponent";
 
 

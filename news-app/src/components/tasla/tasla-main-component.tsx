@@ -1,8 +1,8 @@
 "use client";
 
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { TaslaCardComponent } from "./taslaComponent";
 
 
@@ -19,8 +19,6 @@ export default function TaslaMainComponent() {
   const [newsData, setNewsData] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  const API_KEY = "YOUR_API_KEY"; // Replace with your real API key
 
   const fetchNews = async () => {
     setLoading(true);
@@ -49,7 +47,6 @@ export default function TaslaMainComponent() {
     fetchNews();
   }, []);
 
-  // Local search filtering
   const filteredNews = newsData.filter((news) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -94,7 +91,7 @@ export default function TaslaMainComponent() {
             <p>{error}</p>
           </div>
         ) : filteredNews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredNews.map((news, index) => (
               <TaslaCardComponent
                 key={index}
