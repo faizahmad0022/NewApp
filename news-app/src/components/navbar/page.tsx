@@ -1,4 +1,4 @@
-import Link from "next/link";
+"use client";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -25,23 +25,7 @@ export function Navbar() {
               </div>
               <span className="text-xl font-semibold text-foreground">NewsApp</span>
             </div>
-
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/dashboard/news-page" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Home
-              </Link>
-              <Link href="/dashboard/tasla" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Tasla
-              </Link>
-              <Link href="/dashboard/bussiness-news" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Bussiness
-              </Link>
-              <Link href="/dashboard/source" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Source
-              </Link>
-            </div>
           </div>
-
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               Logout

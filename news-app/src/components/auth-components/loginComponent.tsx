@@ -26,7 +26,7 @@ export default function LoginPage() {
   useEffect(() => {
     const isLoggedIn = document.cookie.includes("isLoggedIn=true");
     if (isLoggedIn) {
-      router.replace("/dashboard/news-page");
+      router.replace("/dashboard");
     }
   }, [router]);
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
     toast.success("Logged in successfully!", { style: { background: "#000", color: "#fff" } });
 
-    router.push("/dashboard/news-page");
+    router.push("/dashboard");
   };
 
 
